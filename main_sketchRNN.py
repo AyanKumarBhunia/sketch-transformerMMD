@@ -1,6 +1,7 @@
 from models import sketchRNNmodel
 from dataset import sketchRNN_Data
 import torch
+import os
 ##################### hyperparameters #####################
 class HParams():
     def __init__(self):
@@ -62,5 +63,7 @@ if __name__ == "__main__":
             #model.generation(dataloader, step, condition=True, foldername='Conditional')
 
         if (step + 1) % 5000 == 0:
+            if not os.path.exists(hp.model_folder):
+                os.makedirs(hp.model_folder)
             torch.save(model.state_dict(), 'sketchRNN_d_' + str(step) + '_.pth')
 

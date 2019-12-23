@@ -79,7 +79,7 @@ class sketchRNNmodel(nn.Module):
     ###############Evaluation (Conditional or Random-Noise based) ################
     ##############################################################################
 
-    def generation(self, dataloader, step, number_of_sample = 100, condition = True, foldername = 'myfolder'):
+    def generation(self, dataloader, step, number_of_sample = 100, condition = False, foldername='Conditional'):
 
         Batch_Input = []
         Batch_Reconstructed = []
@@ -122,6 +122,9 @@ class sketchRNNmodel(nn.Module):
         Batch_Reconstructed_grid = make_grid_svg(Batch_Reconstructed)
         if not os.path.exists(self.hp.foldername):
             os.makedirs(self.hp.foldername)
+        if condition:
+            if not os.path.exists(foldername):
+                os.makedirs(foldername)
         #draw_strokes(Batch_Input_grid, svg_filename= './' + self.hp.foldername + '/Input_'+ str(step) + 'sample.svg')
         draw_strokes(Batch_Reconstructed_grid, svg_filename= './' + self.hp.foldername  + '/Output_'+ str(step) + 'sample.svg')
 
