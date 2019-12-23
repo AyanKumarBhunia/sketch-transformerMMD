@@ -27,6 +27,7 @@ class HParams():
         self.foldername = 'TransEncoder'
         self.dim_feedforward = 2048
         self.dist_matching = 'MMD' # KL vs MMD
+        self.model_folder = 'Saved_Model'
 
         # self.num_steps = 100000  # Total number of steps of training. Keep large.
         # self.save_every = 5000  # Number of batches per checkpoint creation.
