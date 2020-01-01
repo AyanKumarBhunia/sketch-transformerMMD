@@ -29,6 +29,7 @@ class HParams():
         self.dim_feedforward = 2048
         self.dist_matching = 'MMD' # KL vs MMD
         self.model_folder = 'Saved_Model'
+        self.single_embedding = True
 
         # self.num_steps = 100000  # Total number of steps of training. Keep large.
         # self.save_every = 5000  # Number of batches per checkpoint creation.
@@ -65,5 +66,6 @@ if __name__ == "__main__":
         if (step + 1) % 5000 == 0:
             if not os.path.exists(hp.model_folder):
                 os.makedirs(hp.model_folder)
+            
             torch.save(model.state_dict(), 'sketchRNN_d_' + str(step) + '_.pth')
 
