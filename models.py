@@ -125,7 +125,7 @@ class sketchRNNmodel(nn.Module):
         if condition:
             if not os.path.exists(foldername):
                 os.makedirs(foldername)
-        #draw_strokes(Batch_Input_grid, svg_filename= './' + self.hp.foldername + '/Input_'+ str(step) + 'sample.svg')
+        draw_strokes(Batch_Input_grid, svg_filename= './' + self.hp.foldername + '/Input_'+ str(step) + 'sample.svg')
         draw_strokes(Batch_Reconstructed_grid, svg_filename= './' + self.hp.foldername  + '/Output_'+ str(step) + 'sample.svg')
 
     def sample_next_state(self, output, temperature =0.2):

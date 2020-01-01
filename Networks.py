@@ -26,7 +26,12 @@ class EncoderTrans(nn.Module):
         super(EncoderTrans, self).__init__()
         self.hp = hp
         self.src_mask = None
-        self.emb = nn.Linear(5, dmodel)
+
+        if hp.single_embedding:
+            self.emb = nn.Linear(5, dmodel)
+        else:
+            self.emb_1 = nn.Linear(2, int(3*(dmodel/4)))
+            self.emb_2 = nn.Embedding(3, int((dmodel / 4)))
         self.pos_encoder = PositionalEncoding(dmodel)
         encoder_layers = nn.TransformerEncoderLayer(dmodel, 4, hp.dim_feedforward)
         encoder_norm = torch.nn.LayerNorm(dmodel)
@@ -40,7 +45,13 @@ class EncoderTrans(nn.Module):
         for i_k, seq in enumerate(Seq_Len):
             src_key_pad_mask[i_k, seq:] = 1
         src_key_pad_mask= src_key_pad_mask.type(torch.bool)
-        x = self.emb(x.permute(1, 0, 2)).permute(1, 0, 2)
+
+        if self.hp.single_embedding:
+            x = self.emb(x.permute(1, 0, 2)).permute(1, 0, 2)
+        else:
+            x_1 = self.emb_1(x.permute(1, 0, 2)[:,:, :2]).permute(1, 0, 2)
+            x_2 = self.emb_2(x.permute(1, 0, 2)[:,:, 2:].long().argmax(-1)).permute(1, 0, 2)
+            x = torch.cat((x_1, x_2), dim=-1)
         x = self.encoder(self.pos_encoder(x), src_key_padding_mask=src_key_pad_mask.to(device))
         last_time_step = []
         for i_k, seq in enumerate(Seq_Len):
