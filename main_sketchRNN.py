@@ -5,7 +5,8 @@ import os
 ##################### hyperparameters #####################
 class HParams():
     def __init__(self):
-        self.data_set = 'cat.npz'
+        self.data_set = '/home/ayan/Documents/someclass.npz'
+        #self.data_set = 'cat.npz'
         self.enc_rnn_size = 256
         self.dec_rnn_size = 512
         self.z_size = 128
@@ -50,8 +51,8 @@ if __name__ == "__main__":
 
     #######################################################################
     ############################## End Load Data ##########################
-
     model = sketchRNNmodel(hp)
+
     for step in range(100001):
         batch_data, batch_len = dataloader.train_batch()
         kl_cost, recons_loss, loss, curr_learning_rate, curr_kl_weight  = model.train_model(batch_data, batch_len, step)

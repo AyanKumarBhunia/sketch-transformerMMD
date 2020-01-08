@@ -165,3 +165,27 @@ class sketchRNNmodel(nn.Module):
             g['lr'] = curr_learning_rate
 
 
+    def draw_batch_input(self, dataloader, number_of_sample=100):
+
+
+        Batch_Input = []
+        row_count = 0
+        col_count = 0
+
+        for i_x in range(number_of_sample):
+            batch, lengths = dataloader.valid_batch(1)
+            batch_input = to_normal_strokes(batch[:, 0, :].cpu().numpy())
+
+            if (i_x + 0) % 10 == 0:
+                row_count = row_count + 1
+                col_count = 0
+
+            Batch_Input.append([batch_input, [row_count - 1, col_count]])
+            col_count = col_count + 1
+            print(i_x)
+
+        Batch_Input_grid = make_grid_svg(Batch_Input)
+        draw_strokes(Batch_Input_grid, svg_filename='sample.svg')
+
+
+
